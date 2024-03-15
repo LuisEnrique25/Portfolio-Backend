@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       proyect.belongsToMany(models.area, {through: 'proyectsAreas'})
+      proyect.belongsToMany(models.tech, {through: 'proyectech'})
       
 
     }

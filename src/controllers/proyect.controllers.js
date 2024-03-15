@@ -1,8 +1,8 @@
 const catchError = require('../utils/catchError');
-const {proyect, area} = require('../models');
+const {proyect, area, tech} = require('../models');
 
 const getAll = catchError(async(req, res) => {
-    const results = await proyect.findAll({include: area});
+    const results = await proyect.findAll({include: [area, tech]});
     return res.json(results);
 });
 
@@ -13,7 +13,7 @@ const create = catchError(async(req, res) => {
 
 const getOne = catchError(async(req, res) => {
     const { id } = req.params;
-    const result = await proyect.findByPk(id);
+    const result = await proyect.findByPk(id, {include: [area, tech]});
     if(!result) return res.sendStatus(404);
     return res.json(result);
 });
@@ -45,7 +45,18 @@ const setArea = catchError(async(req, res) => {
     const areas = await pryct.getAreas();
 
     return res.json(areas)
+});
 
+const setTech = catchError(async(req, res) => {
+    const {id} = req.params;
+    const proyct = await proyect.findByPk(id)  //proyct -> proyect
+    if(!proyct) return res.sendStatus(404);
+
+    await proyct.setTeches(req.body)
+
+    const techs = await proyct.getTeches();
+
+    return res.json(techs)
 })
 
 module.exports = {
@@ -54,5 +65,6 @@ module.exports = {
     getOne,
     remove,
     update,
-    setArea
+    setArea,
+    setTech
 }

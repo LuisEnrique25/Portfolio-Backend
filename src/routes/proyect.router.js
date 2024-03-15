@@ -1,4 +1,4 @@
-const { getAll, create, getOne, remove, update, setArea } = require('../controllers/proyect.controllers');
+const { getAll, create, getOne, remove, update, setArea, setTech } = require('../controllers/proyect.controllers');
 const express = require('express');
 
 const routerProyect = express.Router();
@@ -9,6 +9,9 @@ routerProyect.route('/')
 
 routerProyect.route("/:id/areas")
     .post(setArea)
+
+routerProyect.route("/:id/techs")
+    .post(setTech)
 
 routerProyect.route('/:id')
     .get(getOne)
