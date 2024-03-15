@@ -42,13 +42,19 @@ const update = catchError(async(req, res) => {
 const login = catchError(async(req, res) => {
     const { email, password } = req.body;
     //verifcamos si el usuario/email existe
-    const usuario = await user.findOne({where: {email}})
-    if(!usuario) return res.status(401).json( {error: "Invalid credentials"});
+    const userLog = await user.findOne({where: {email}})
+    if(!userLog) return res.status(401).json( {error: "Invalid credentials"});
 
-    const isValid = await bcrypt.compare(password, usuario.password)
+    const isValid = await bcrypt.compare(password, userLog.password)
     if(!isValid) return res.status(401).json( {error: "Invalid credentials"});
 
-    return res.status(201).json(usuario);
+    const token = jwt.sign(
+        {userLog},
+        process.env.TOKEN_SECRET,
+        {expiresIn: "1d"}
+    )
+
+    return res.status(201).json( {userLog, token});
 
 
 });
