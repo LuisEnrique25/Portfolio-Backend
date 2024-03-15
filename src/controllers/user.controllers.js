@@ -39,6 +39,20 @@ const update = catchError(async(req, res) => {
     return res.json(result[1][0]);
 });
 
+const login = catchError(async(req, res) => {
+    const { email, password } = req.body;
+    //verifcamos si el usuario/email existe
+    const user = await user.findOne({where: email})
+    if(!user) return res.status(401).json( {error: "Invalid credentials"});
+
+    const isValid = await bcrypt.compare(password, user.password)
+    if(!isValid) return res.status(401).json( {error: "Invalid credentials"});
+
+    return res.status(201).json(user);
+
+
+});
+
 module.exports = {
     getAll,
     create,
