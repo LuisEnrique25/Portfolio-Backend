@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class proyect extends Model {
+  class media extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,31 +11,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      proyect.belongsToMany(models.area, {through: 'proyectsAreas'})
-      
-
     }
   }
-  proyect.init({
-    tittle: {
+  media.init({
+    name: {
       type: DataTypes.STRING,
-      unique: true,
-      allowNull:false
-    },
-      
-    description: {
-      type: DataTypes.TEXT,
       allowNull: false
     },
-    url: {
+    url:{
       type: DataTypes.TEXT,
-      allowNull: false,
-      unique: true
+      allowNull: false
     }
   }, {
     sequelize,
-    modelName: 'proyect',
+    modelName: 'media',
     timestamps: false
   });
-  return proyect;
+  return media;
 };
